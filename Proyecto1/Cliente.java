@@ -7,8 +7,8 @@ public class Cliente implements Serializable{
     private String id;
     private String username;
     private String password;
-    //List<Account> accounts = new List<Account>();
-    //List<Investment> investments = new List<Investment>();
+    //List<Cuenta> accounts;;
+    //List<Inversion> investments;
     private Boolean loggedIn = false;
 
     public Cliente(String id, String username, String password) {
@@ -53,7 +53,7 @@ public class Cliente implements Serializable{
         this.password = password;
     }
 
-    public void setLoggedIn(Boolean LoggedIn) {
+    public void setLoggedIn(Boolean loggedIn) {
         this.loggedIn = loggedIn;
     }
 
