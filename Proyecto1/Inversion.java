@@ -39,10 +39,11 @@ public class Inversion {
     //This method returns the invesment after a minute
     private void scheduleReimbursement(){
         schedulerRetribution.schedule(() ->{
-            double totalreturn = amountInvesment * 1.1;
+            double totalreturn = amountInvesment + (amountInvesment * 0.10);
             sourceAccount.deposit(totalreturn); // returns the investment with the winnings
         },1, TimeUnit.MINUTES);
     }
 
+    public String mostrarInversion()
 
 }
