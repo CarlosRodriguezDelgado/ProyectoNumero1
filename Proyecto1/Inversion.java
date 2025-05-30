@@ -36,7 +36,7 @@ public class Inversion {
             throw new IllegalArgumentException("No se puede realizar la inversion porque no hay fondos suficientes");
         }
     }
-    //This method returns the invesment after a minute
+    //This method returns the investment after a minute
     private void scheduleReimbursement(){
         schedulerRetribution.schedule(() ->{
             double totalreturn = amountInvesment + (amountInvesment * 0.10);
@@ -44,6 +44,6 @@ public class Inversion {
         },1, TimeUnit.MINUTES);
     }
 
-    public String mostrarInversion()
+    
 
 }
