@@ -26,6 +26,27 @@ public class Cuenta{
         this.accountNumber = accountNumber;
     }
     
+    public synchronized boolean deposit(double amount){
+        boolean success = false;
+        if(amount > 0){
+            this.balance =+ amount;
+            success = true;
+        }
+        return success;
+    
+    }
+
+    public synchronized boolean withdraw(double amount){
+        boolean success = false;
+        if(balance > amount){
+            balance = balance - amount;
+            success = true;
+        }else{
+            IOManager.escribir("No tiene fondos suficientes");
+        }
+
+        return success;
+    }
     
 
 }
