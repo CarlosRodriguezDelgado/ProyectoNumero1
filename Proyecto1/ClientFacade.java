@@ -7,7 +7,7 @@ public ClientFacade(){
 }
 
 
-public boolean createAnInvestmentCertificate(String clientId, String accountNumber, double amount){
+public String createAnInvestmentCertificate(String clientId, String accountNumber, double amount){
     return service.createInvestment(clientId, accountNumber, amount);
 }
 

@@ -1,7 +1,5 @@
 import java.util.*;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class Inversion {
     private final String id;
@@ -30,12 +28,14 @@ public class Inversion {
     public String getSourceAccount() {
         return sourceAccount.getAccountNumber();
     }
+
     //This method validates if is possible to withdraw the amount of investment and stop it if is necessary
     private void validateWithdraw(){
         if(!sourceAccount.withdraw(amountInvesment)){
             throw new IllegalArgumentException("No se puede realizar la inversion porque no hay fondos suficientes");
         }
     }
+    
     //This method returns the investment after a minute
     private void scheduleReimbursement(){
         schedulerRetribution.schedule(() ->{
@@ -43,7 +43,5 @@ public class Inversion {
             sourceAccount.deposit(totalreturn); // returns the investment with the winnings
         },1, TimeUnit.MINUTES);
     }
-
-    
 
 }

@@ -1,22 +1,22 @@
 
 import java.io.Serializable;
-
+import java.util.*;
 
 public class Cliente implements Serializable{
     IOManager ioManager = new IOManager();
     private String id;
     private String username;
     private String password;
-    //List<Cuenta> accounts;;
-    //List<Inversion> investments;
-    private Boolean loggedIn = false;
+    private List<Cuenta> accounts;;
+    private List<Inversion> investments;
+    private Boolean loggedIn;
 
     public Cliente(String id, String username, String password) {
-       this.id = id;
+        this.id = id;
         this.username = username;
         this.password = password;
-        //this.accounts = new ArrayList<>();
-        //this.investments = new ArrayList<>();
+        this.accounts = new ArrayList<>();
+        this.investments = new ArrayList<>();
         this.loggedIn = false;
     }
 
@@ -28,14 +28,14 @@ public class Cliente implements Serializable{
         return username;
     }
 
-   /* public List<Account> getAccounts() {
+    public List<Cuenta> getAccounts() {
         return accounts;
     }
 
-    public List<Investment> getInvestments() {
+    public List<Inversion> getInvestments() {
         return investments;
     }
-        */
+        
     
     public boolean isLoggedIn() {
         return loggedIn;
@@ -61,26 +61,32 @@ public class Cliente implements Serializable{
         return this.password.equals(password);
     }
 
-   /*  public void addAccount(Account account){
+    public boolean addAccount(Cuenta account){
     boolean cuentaExiste = false;
     for (int i = 0; i < this.accounts.size(); i++) { 
-        Account cuentaExistente = this.accounts.get(i);
-        if (cuentaExistente.getNumber().equals(account.getNumber())) {
+        Cuenta cuentaExistente = this.accounts.get(i);
+        if (cuentaExistente.getAccountNumber().equals(account.getAccountNumber())) {
             cuentaExiste = true; 
             break;
         }
     }
         if (cuentaExiste) {
-        ioManager.escribir("La cuenta con número " + account.getNumber() + " ya existe.");
+        IOManager.escribir("La cuenta con número " + account.getAccountNumber() + " ya existe.");
         return false;
     }
         this.accounts.add(account);
         return true;
     }
 
-    public boolean addInvestment(Investment investment){
+    public boolean addInvestment(Inversion investment){
      this.investments.add(investment);
      return true;
     }
-    */
+    
+
+    public Cuenta findAccount(String accountNumber){
+        return accounts.stream()
+                .filter(account -> account.getAccountNumber().equals(accountNumber))
+                .findFirst().orElse(null);
+    }
 }
