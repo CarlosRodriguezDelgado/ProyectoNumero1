@@ -4,6 +4,7 @@ public class ClientFacade {
     // Usar en ClientHandler y la parte de app dependiendo de la funcionalidad
     private ClientService service;
     private Cliente cliente;
+
     public ClientFacade(Cliente c) {
         service = new ClientService();
         this.cliente= c;
@@ -31,16 +32,14 @@ public class ClientFacade {
     }
 
    
-      public String listarInversiones() {
-    return service.listInversions(cliente.getUsername());
-}
-
-public String listarCuentas() {
-    return service.AccountList(cliente.getUsername());
-}
-
-        
-          
+    public String listarInversiones() {
+        return service.listInversions(cliente.getUsername());
     }
+
+    public String listarCuentas() {
+        return service.AccountList(cliente.getUsername());
+    }
+
+}
 
 
