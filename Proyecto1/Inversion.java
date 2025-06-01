@@ -5,7 +5,7 @@ public class Inversion {
     private final String id;
     private final double amountInvesment;
     private final Cuenta sourceAccount;
-    private static final ScheduledExecutorService schedulerRetribution = Executors.newScheduledThreadPool(5); //Hardcode 4 clients
+    private static final ScheduledExecutorService schedulerRetribution = Executors.newScheduledThreadPool(5); //How many threads can run
     
 
     public Inversion(String id, double amount, Cuenta originAccount){
@@ -39,9 +39,13 @@ public class Inversion {
     //This method returns the investment after a minute
     private void scheduleReimbursement(){
         schedulerRetribution.schedule(() ->{
-            double totalreturn = amountInvesment + (amountInvesment * 0.10);
+            double totalreturn = amountInvesment  * 1.10;
             sourceAccount.deposit(totalreturn); // returns the investment with the winnings
         },1, TimeUnit.MINUTES);
+    }
+
+    public void scheduleShutdown(){
+        schedulerRetribution.shutdown();
     }
 
 }

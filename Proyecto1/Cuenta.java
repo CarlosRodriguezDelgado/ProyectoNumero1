@@ -29,7 +29,7 @@ public class Cuenta{
     public synchronized boolean deposit(double amount){
         boolean success = false;
         if(amount > 0){
-            this.balance =+ amount;
+            this.balance += amount;
             success = true;
         }
         return success;
@@ -38,6 +38,8 @@ public class Cuenta{
 
     public synchronized boolean withdraw(double amount){
         boolean success = false;
+        if(amount < 0 ) throw new IllegalArgumentException("El monto a depositar no puede ser menor a 0");
+    
         if(balance > amount){
             balance = balance - amount;
             success = true;
@@ -48,5 +50,4 @@ public class Cuenta{
         return success;
     }
     
-
 }
