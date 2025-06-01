@@ -1,9 +1,12 @@
+import java.util.List;
+
 public class ClientFacade {
     // Usar en ClientHandler y la parte de app dependiendo de la funcionalidad
     private ClientService service;
-
-    public ClientFacade() {
+    private Cliente cliente;
+    public ClientFacade(Cliente c) {
         service = new ClientService();
+        this.cliente= c;
 
     }
 
@@ -27,4 +30,28 @@ public class ClientFacade {
         return service.withdraw(username, accountNumber, amount);
     }
 
-}
+    public String ListInvestments(){
+     List<Inversion> lista1= this.cliente.getInvestments();
+      String Inversiones="";
+     for (Inversion inversion : lista1) {
+        Inversiones+= "Monto: "+ inversion.getAmountInvesment()+ "Cuenta:"   + inversion.getSourceAccount()+ "ID:" + inversion.getId()+"\n";
+     }
+            return Inversiones;
+        }
+
+
+        public String ListAccounts(){
+       List<Cuenta> lista2=  this.cliente.getAccounts();
+        String cuentas= "";
+         for (Cuenta cuenta : lista2) {
+            cuentas+= "Numero de cuenta:" + cuenta.getAccountNumber()+"Fondos:"+ String.valueOf(cuenta.getBalance())+"\n" ;
+         }
+         return cuentas;
+
+        }
+
+        
+          
+    }
+
+
