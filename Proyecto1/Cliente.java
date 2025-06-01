@@ -10,6 +10,7 @@ public class Cliente implements Serializable{
     private List<Cuenta> accounts;;
     private List<Inversion> investments;
     private Boolean loggedIn;
+    
 
     public Cliente(String id, String username, String password) {
         this.id = id;

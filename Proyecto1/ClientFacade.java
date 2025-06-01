@@ -30,25 +30,14 @@ public class ClientFacade {
         return service.withdraw(username, accountNumber, amount);
     }
 
-    public String ListInvestments(){
-     List<Inversion> lista1= this.cliente.getInvestments();
-      String Inversiones="";
-     for (Inversion inversion : lista1) {
-        Inversiones+= "Monto: "+ inversion.getAmountInvesment()+ "Cuenta:"   + inversion.getSourceAccount()+ "ID:" + inversion.getId()+"\n";
-     }
-            return Inversiones;
-        }
+   
+      public String listarInversiones() {
+    return service.listInversions(cliente.getUsername());
+}
 
-
-        public String ListAccounts(){
-       List<Cuenta> lista2=  this.cliente.getAccounts();
-        String cuentas= "";
-         for (Cuenta cuenta : lista2) {
-            cuentas+= "Numero de cuenta:" + cuenta.getAccountNumber()+"Fondos:"+ String.valueOf(cuenta.getBalance())+"\n" ;
-         }
-         return cuentas;
-
-        }
+public String listarCuentas() {
+    return service.AccountList(cliente.getUsername());
+}
 
         
           
