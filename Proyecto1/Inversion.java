@@ -40,7 +40,11 @@ public class Inversion {
     private void scheduleReimbursement(){
         schedulerRetribution.schedule(() ->{
             double totalreturn = amountInvesment  * 1.10;
-            sourceAccount.deposit(totalreturn); // returns the investment with the winnings
+            try {
+                sourceAccount.deposit(totalreturn);
+            } catch (Exception e) {
+                e.printStackTrace();
+            } // returns the investment with the winnings
         },1, TimeUnit.MINUTES);
     }
 

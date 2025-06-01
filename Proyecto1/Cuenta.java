@@ -26,12 +26,13 @@ public class Cuenta{
         this.accountNumber = accountNumber;
     }
     
-    public synchronized boolean deposit(double amount){
+    public synchronized boolean deposit(double amount) throws Exception{
         boolean success = false;
-        if(amount > 0){
-            this.balance += amount;
-            success = true;
-        }
+        if(amount <= 0) throw new Exception("El monto a depositar debe ser positivo.");
+      
+        this.balance += amount;
+        success = true;
+
         return success;
     
     }
@@ -44,7 +45,7 @@ public class Cuenta{
             balance = balance - amount;
             success = true;
         }else{
-            IOManager.escribir("No tiene fondos suficientes");
+            throw new IllegalStateException("No tiene fondos suficinetes, su saldo es de" + this.balance);
         }
 
         return success;

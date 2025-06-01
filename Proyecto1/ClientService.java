@@ -2,9 +2,9 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClientService{
-    //Toda la logica del banco estará aca
     private List<Cliente> clientsList;
-    private static final AtomicInteger counter = new AtomicInteger(1);    
+    private static final AtomicInteger counter = new AtomicInteger(1); 
+
     public ClientService(){
         clientsList = new ArrayList<>();
         clientsList.add(new Cliente("u1", "ana", "1234" ));
@@ -27,10 +27,11 @@ public class ClientService{
         return false;
     }
 
-    public void logout(String clientId){
-        Cliente cliente = getClientById(clientId);
+    public boolean logout(String clientUser){
+        Cliente cliente = getClientByUser(clientUser);
 
         if(cliente != null && cliente.isLoggedIn()) cliente.setLoggedIn(false);
+        return true;
     }
 
     public Cliente getClientById(String clientId){
@@ -45,12 +46,11 @@ public class ClientService{
                 .findFirst().orElse(null);
     }
     
-
-    public String createInvestment(String clientId, String accountNumber, double amount){
+    public String createInvestment(String username, String accountNumber, double amount){
         //First we need to know if the client exists
-        Cliente client = getClientById(clientId);
-        //Know if the client if logged  
-        if(!client.isLoggedIn() || client == null) return "No se pudo realizar la inversion";
+        Cliente client = getClientByUser(username);
+        
+        if(client == null) throw new IllegalAccessError("Cliente no existente");
 
         //Then find the account number in the list of clients 
         Cuenta clientAccount = client.findAccount(accountNumber);
@@ -62,10 +62,38 @@ public class ClientService{
         Inversion investment = new Inversion(idInvesment, amount, clientAccount); 
         client.addInvestment(investment);
 
-        return "Cuenta " + investment.getSourceAccount() + " - " + investment.getId() 
+        return "Cuenta " + investment.getSourceAccount() + "  -  " + investment.getId() +" - "
         + (investment.getAmountInvesment() + (investment.getAmountInvesment() * 1.1)) + "de certificado de ganancias"; 
 
         
+    }
+
+    public boolean deposit(String username ,String accountNumber, double amount) throws Exception{
+        //Verify if the client exists
+        Cliente client = getClientByUser(username);
+        
+        if(client == null) throw new Exception("Cliente no encontrado.");
+        
+        //Search if the account exists en client
+        Cuenta cuenta = client.findAccount(accountNumber);
+        if(cuenta == null) throw new Exception("Cuenta no encontrada para el cliente.");
+
+        cuenta.deposit(amount);
+        return true;
+    }
+
+    public boolean withdraw(String username, String accountNumber, double amount) throws Exception{
+         //Verify if the client exists
+        Cliente client = getClientByUser(username);
+        
+        if(client == null) throw new Exception("Cliente no encontrado.");
+        
+        //Search if the account exists en client
+        Cuenta cuenta = client.findAccount(accountNumber);
+        if(cuenta == null) throw new Exception("Cuenta no encontrada para el cliente.");
+
+        cuenta.withdraw(amount);
+        return true;
     }
  
 }
