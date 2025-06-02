@@ -97,38 +97,42 @@ public class ClientService{
     }
  
 
-       public String listInversions(String username) {
-    Cliente client = getClientByUser(username);
-    if (client == null) return "Cliente no encontrado.";
+      public String listInversions(String username) {
+        Cliente client = getClientByUser(username);
+        if (client == null)
+            return "Cliente no encontrado.";
 
-    List<Inversion> inversiones = client.getInvestments();
-    if (inversiones.isEmpty()) return "El cliente no tiene inversiones registradas.";
+        List<Inversion> inversiones = client.getInvestments();
+        if (inversiones.isEmpty())
+            return "El cliente no tiene inversiones registradas.";
 
-    StringBuilder resultado = new StringBuilder();
-    for (Inversion inversion : inversiones) {
-        resultado.append("Monto: ").append(inversion.getAmountInvesment())
-                 .append(" | Cuenta: ").append(inversion.getSourceAccount())
-                 .append(" | ID: ").append(inversion.getId())
-                 .append("\n");
+        StringBuilder resultado = new StringBuilder();
+        for (Inversion inversion : inversiones) {
+            resultado.append("Monto: ").append(inversion.getAmountInvesment())
+                    .append(" | Cuenta: ").append(inversion.getSourceAccount())
+                    .append(" | ID: ").append(inversion.getId())
+                    .append("\n");
+        }
+        return resultado.toString();
     }
-    return resultado.toString();
-}
 
-public String AccountList(String username) {
-    Cliente client = getClientByUser(username);
-    if (client == null) return "Cliente no encontrado.";
+    public String AccountList(String username) {
+        Cliente client = getClientByUser(username);
+        if (client == null)
+            return "Cliente no encontrado.";
 
-    List<Cuenta> cuentas = client.getAccounts();
-    if (cuentas.isEmpty()) return "El cliente no tiene cuentas.";
+        List<Cuenta> cuentas = client.getAccounts();
+        if (cuentas.isEmpty())
+            return "El cliente no tiene cuentas.";
 
-    StringBuilder resultado = new StringBuilder();
-    for (Cuenta cuenta : cuentas) {
-        resultado.append("Número de cuenta: ").append(cuenta.getAccountNumber())
-                 .append(" | Fondos: ").append(cuenta.getBalance())
-                 .append("\n");
+        StringBuilder resultado = new StringBuilder();
+        for (Cuenta cuenta : cuentas) {
+            resultado.append("Número de cuenta: ").append(cuenta.getAccountNumber())
+                    .append(" | Fondos: ").append(cuenta.getBalance())
+                    .append("\n");
+        }
+        return resultado.toString();
     }
-    return resultado.toString();
-}
 
 }
 

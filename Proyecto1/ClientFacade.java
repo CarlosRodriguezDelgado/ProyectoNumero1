@@ -5,9 +5,8 @@ public class ClientFacade {
     private ClientService service;
     private Cliente cliente;
 
-    public ClientFacade(Cliente c) {
-        service = new ClientService();
-        this.cliente= c;
+    public ClientFacade(ClientService service) {
+       this.service = service;
 
     }
 
@@ -32,12 +31,12 @@ public class ClientFacade {
     }
 
    
-    public String listarInversiones() {
-        return service.listInversions(cliente.getUsername());
+    public String listarInversiones(String username) {
+        return service.listInversions(username);
     }
 
-    public String listarCuentas() {
-        return service.AccountList(cliente.getUsername());
+    public String listarCuentas(String username) {
+        return service.AccountList(username);
     }
 
 }
