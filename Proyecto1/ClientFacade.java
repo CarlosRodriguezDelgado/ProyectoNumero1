@@ -1,4 +1,3 @@
-import java.util.List;
 
 public class ClientFacade {
     // Usar en ClientHandler y la parte de app dependiendo de la funcionalidad
@@ -18,6 +17,9 @@ public class ClientFacade {
         return service.logout(username);
     }
 
+    public void createAcount(String username, String accountNumber, double amount){
+        service.createAcount(username, accountNumber, amount);
+    }
     public String createAnInvestmentCertificate(String clientId, String accountNumber, double amount) {
         return service.createInvestment(clientId, accountNumber, amount);
     }

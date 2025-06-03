@@ -46,6 +46,16 @@ public class ClientService{
                 .findFirst().orElse(null);
     }
     
+    public void createAcount(String username, String accountNumber, double amount){
+
+        Cliente client = getClientByUser(username);
+        
+        if(client == null) throw new IllegalAccessError("Cliente no existente");
+
+        Cuenta cuenta = new Cuenta(accountNumber, amount);
+        client.addAccount(cuenta);
+    }
+
     public String createInvestment(String username, String accountNumber, double amount){
         //First we need to know if the client exists
         Cliente client = getClientByUser(username);
