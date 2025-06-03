@@ -12,11 +12,11 @@ public class Servidor {
         ClientService service = new ClientService();
         ClientFacade facade = new ClientFacade(service);
 
-        // Crear un pool de hilos para manejar los clientes
+        // Pool de hilos, si hay mas de 4 hilos, el resto se queda en espera hasta que se libere un espacio
         ExecutorService threads = Executors.newFixedThreadPool(4);
 
         try (ServerSocket servidor = new ServerSocket(puerto)) {
-            System.out.println("esperando conexion en el puerto" + puerto);
+            System.out.println("Esperando conexion en el puerto " + puerto);
 
             while (true) {
                 Socket clienteSocket = servidor.accept();

@@ -1,8 +1,6 @@
 public class SingletonPuerto {
-     
-     private static SingletonPuerto instancia= null;
-
-    private static final int PUERTO= 5001;
+    private static SingletonPuerto instancia = null;
+    private static final int PUERTO = 5001;
 
     private SingletonPuerto() {
         

@@ -6,7 +6,7 @@ public class ClientHandler implements Runnable {
 
     private Socket socketCliente;
     private ClientFacade facade;
-    private String actualUser;
+    private String actualUser; 
 
     public ClientHandler(Socket s, ClientFacade facade) {
         socketCliente = s;
@@ -16,57 +16,53 @@ public class ClientHandler implements Runnable {
     @Override
     public void run() {
         try (BufferedReader in = new BufferedReader(new InputStreamReader(socketCliente.getInputStream())); PrintWriter out = new PrintWriter(socketCliente.getOutputStream(), true);) {
-            // 1- User log 
+            // 1- Autenticación del usuario
             out.println("Bienvenido/a a la aplicación bancaria móvil");
             authenticateUser(in, out);
+          
+            //2- Cuando se autentique correctamente procede a aparecer el menú
+            boolean isRunning = true;
 
-            // 2- Show Menu
-            showMenu(out);
-            String option = in.readLine();
+            while (isRunning) {
+                 showMenu(out);
+                 String option = in.readLine();
 
-            switch (option) {
-                case "1":
-                    out.println("Ingrese el número de cuenta que va a crear");
-                    String numeroDecuenta = in.readLine();
-                    out.println("Ingrese el monto inicial que tendra su cuenta");
-                    double amount = Double.parseDouble(in.readLine());
-                    facade.createAcount(this.actualUser, this.actualUser, amount);
-                    break;
-                case "2":
-                    makeDeposit(in, out);
-                    break;
-                case "3":
-                    makeWithdrawal(in, out);
-                    break;
-                case "4":
-                    out.println("Ingrese el número de cuenta que va a crear");
-                    String numeroDecuentaa = in.readLine();
-                    out.println("Ingrese el monto inicial que tendra su cuenta");
-                    double amountt = Double.parseDouble(in.readLine());
-                    facade.createAnInvestmentCertificate(this.actualUser, this.actualUser, amountt);
-                    break;
-                case "5":
-                    facade.listarCuentas(actualUser);
-                    facade.listarInversiones(actualUser);
-                    break;
-                case "6":
-                    logOut(out);
-                    break;
-
-                default:
-                    break;
+                 switch (option) {
+                      case "1":
+                           addAccount(in, out);
+                           break;
+                      case "2":
+                           makeDeposit(in, out);
+                           break;
+                      case "3":
+                           makeWithdrawal(in, out);
+                           break;
+                      case "4":
+                           createInvestment(in, out);
+                           break;
+                      case "5":
+                           out.println(facade.listarCuentas(actualUser));
+                           out.println(facade.listarInversiones(actualUser));
+                           break;
+                      case "6":
+                           logOut(out);
+                           isRunning = false;
+                           break;
+                      default:
+                         throw new AssertionError();
+                 }
             }
 
-        } catch (IOException e) {
+       } catch (IOException e) {
             IOManager.escribir("Error: " + e);
-        } catch (Exception ex) {
+       } catch (Exception ex) {
             IOManager.escribir("Error: " + ex);
-        }
-    }
+       }
+  }
 
     private void authenticateUser(BufferedReader in, PrintWriter out) throws IOException {
         boolean inUser = false;
-
+          //El inicio de sesión se hara correctamente hasta que se ingresen credenciales validas
         while (!inUser) {
             out.println("Ingrese su usuario");
             String user = in.readLine();
@@ -76,15 +72,14 @@ public class ClientHandler implements Runnable {
             if (facade.logIn(user, pass)) {
                 actualUser = user;
                 inUser = true;
-                IOManager.escribir("¡Has iniciado sesión correctamente!");
+                out.println("¡Has iniciado sesión correctamente!");
             } else {
-                IOManager.escribir("Datos incorrectos, o ya has iniciado sesión anteriormente");
+                out.println("Datos incorrectos, o ya has iniciado sesión anteriormente");
             }
         }
     }
 
     private void showMenu(PrintWriter out) {
-
         out.println("\n--- MENÚ DE LA APLICACIÖN---");
         out.println("1. Crear cuenta bancaria");
         out.println("2. Depositar");
@@ -96,41 +91,59 @@ public class ClientHandler implements Runnable {
 
     }
 
-    public void makeDeposit(BufferedReader in, PrintWriter out) throws IOException {
-        out.println("Digite el número de cuenta");
-        String accNumber = in.readLine();
-        out.println("Ingrese el monto a depositar: ");
-        double amount = Double.parseDouble(in.readLine());
+    private void makeDeposit(BufferedReader in, PrintWriter out){
 
-        try {
-            if (facade.deposit(this.actualUser, accNumber, amount)) {
-                out.println("¡Depósito exitoso!");
-            }
-        } catch (Exception e) {
-            IOManager.escribir("Error: " + e);
-        }
+         try {
+              out.println("Digite el número de cuenta");
+              String accNumber = in.readLine();
+              out.println("Ingrese el monto a depositar: ");
+              double amount = Double.parseDouble(in.readLine());
+              out.println(facade.deposit(this.actualUser, accNumber, amount));
+         } catch (Exception e) {
+              out.println("Error: " + e);
+         }
     }
 
-    public void makeWithdrawal(BufferedReader in, PrintWriter out) throws IOException {
-        out.println("Ingrese el número de cuenta donde desea retirar");
-        String acc = in.readLine();
-        out.println("Ingrese el monto a retirar");
-        double amount = Double.parseDouble(in.readLine());
-
-        try {
-            if (facade.retirar(this.actualUser, acc, amount)) {
-                out.println("Retiro realizado exitosamente");
-            } else {
-                out.println("No se pudo realizar la accion");
-            }
-        } catch (Exception e) {
-            IOManager.escribir("Error: " + e);
-        }
+    private void makeWithdrawal(BufferedReader in, PrintWriter out) {
+    
+         try {
+              out.println("Ingrese el número de cuenta donde desea retirar");
+              String acc = in.readLine();
+              out.println("Ingrese el monto a retirar");
+              double amount = Double.parseDouble(in.readLine());
+              out.println(facade.withdraw(this.actualUser, acc, amount));
+         } catch (Exception e) {
+              out.println("Error: " + e);
+         }
     }
 
-    public void logOut(PrintWriter out) {
+    private void logOut(PrintWriter out) {
         facade.logOut(actualUser);
         out.println("sesion cerrada");
+    }
+
+    private void addAccount(BufferedReader in, PrintWriter out) {
+         try {
+              out.println("Ingrese el número de cuenta que va a crear");
+              String accNumber = in.readLine();
+
+              out.println(facade.createAcount(this.actualUser, accNumber));
+         } catch (Exception e) {
+              out.println("Error: " + e);
+         }
+
+    }
+
+    private void createInvestment(BufferedReader in, PrintWriter out) {
+         try {
+              out.println("Ingrese el numero de cuenta de la cual invertirá");
+              String accNum = in.readLine();
+              out.println("Ingrese el monto a invertir");
+              double amount = Double.parseDouble(in.readLine());
+              out.println(facade.createAnInvestmentCertificate(this.actualUser, accNum, amount));
+         } catch (Exception e) {
+              out.println("Error: " + e);
+         }
     }
 
 }

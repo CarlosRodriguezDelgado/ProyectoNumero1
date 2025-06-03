@@ -63,19 +63,12 @@ public class Cliente implements Serializable{
     }
 
     public boolean addAccount(Cuenta account){
-    boolean cuentaExiste = false;
-    for (int i = 0; i < this.accounts.size(); i++) { 
-        Cuenta cuentaExistente = this.accounts.get(i);
-        if (cuentaExistente.getAccountNumber().equals(account.getAccountNumber())) {
-            cuentaExiste = true; 
-            break;
+        
+        if (findAccount(account.getAccountNumber()) != null) {
+            throw new IllegalArgumentException("La cuenta con número " + account.getAccountNumber() + " ya existe.");
         }
-    }
-        if (cuentaExiste) {
-        IOManager.escribir("La cuenta con número " + account.getAccountNumber() + " ya existe.");
-        return false;
-    }
-        this.accounts.add(account);
+
+        accounts.add(account);
         return true;
     }
 

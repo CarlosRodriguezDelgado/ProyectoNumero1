@@ -6,15 +6,13 @@ public class Inversion {
     private final double amountInvesment;
     private final Cuenta sourceAccount;
     private static final ScheduledExecutorService schedulerRetribution = Executors.newScheduledThreadPool(5); //How many threads can run
-    
 
     public Inversion(String id, double amount, Cuenta originAccount){
         this.id = id;
         this.amountInvesment = amount;
         this.sourceAccount = originAccount;
 
-        validateWithdraw();
-        scheduleReimbursement(); 
+        scheduleReimbursement(); //Hace el reintegro internamente en el instante en que se hace la inversion
     }
 
     public String getId(){
@@ -29,22 +27,15 @@ public class Inversion {
         return sourceAccount.getAccountNumber();
     }
 
-    //This method validates if is possible to withdraw the amount of investment and stop it if is necessary
-    private void validateWithdraw(){
-        if(!sourceAccount.withdraw(amountInvesment)){
-            throw new IllegalArgumentException("No se puede realizar la inversion porque no hay fondos suficientes");
-        }
-    }
-    
-    //This method returns the investment after a minute
+    //Retorna la inversion despues de un minuto
     private void scheduleReimbursement(){
         schedulerRetribution.schedule(() ->{
-            double totalreturn = amountInvesment  * 1.10;
+            double totalreturn = amountInvesment  * 0.10;
             try {
                 sourceAccount.deposit(totalreturn);
             } catch (Exception e) {
                 e.printStackTrace();
-            } // returns the investment with the winnings
+            } 
         },1, TimeUnit.MINUTES);
     }
 

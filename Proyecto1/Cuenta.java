@@ -10,6 +10,11 @@ public class Cuenta{
         this.balance =  balance;
     }
 
+    public Cuenta(String accountNum){
+        this.accountNumber = accountNum;
+        this.balance = 0;
+    }
+
     public String getAccountNumber(){
         return this.accountNumber;
     }
@@ -26,7 +31,7 @@ public class Cuenta{
         this.accountNumber = accountNumber;
     }
     
-    public synchronized boolean deposit(double amount) throws Exception{
+    public boolean deposit(double amount) throws Exception{
         boolean success = false;
         if(amount <= 0) throw new Exception("El monto a depositar debe ser positivo.");
       
@@ -37,7 +42,7 @@ public class Cuenta{
     
     }
 
-    public synchronized boolean withdraw(double amount){
+    public boolean withdraw(double amount){
         boolean success = false;
         if(amount < 0 ) throw new IllegalArgumentException("El monto a depositar no puede ser menor a 0");
     
