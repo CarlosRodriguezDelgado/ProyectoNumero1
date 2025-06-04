@@ -1,9 +1,6 @@
-
-import java.io.Serializable;
 import java.util.*;
 
-public class Cliente implements Serializable{
-    IOManager ioManager = new IOManager();
+public class Cliente{
     private String id;
     private String username;
     private String password;

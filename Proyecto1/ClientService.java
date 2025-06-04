@@ -91,12 +91,10 @@ public class ClientService{
     }
 
     public String deposit(String username ,String accountNumber, double amount) throws Exception{
-        //Verify if the client exists
         Cliente client = getClientByUser(username);
         
         if(client == null) throw new Exception("Cliente no encontrado.");
         
-        //Search if the account exists en client
         Cuenta cuenta = client.findAccount(accountNumber);
         if(cuenta == null) throw new Exception("Cuenta no encontrada para el cliente.");
 
